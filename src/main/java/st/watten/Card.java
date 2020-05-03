@@ -2,7 +2,7 @@ package st.watten;
 
 /**
  * This class represents the most essential part of the Watten game, a card. It
- * holds a sign and a value. Watten in South Tyrol traditionally makes use of
+ * holds a rank and a value. Watten in South Tyrol traditionally makes use of
  * the Salzburger Spielkarten.
  *
  * @see https://de.wikipedia.org/wiki/Spielkarte#Deutsches_Blatt
@@ -12,9 +12,9 @@ package st.watten;
 public class Card {
 
     /**
-     * Card sign values, aka. "Schlag"
+     * Card rank values, aka. "Schlag"
      */
-    public enum Sign {
+    public enum Rank {
         ASS, // ACE
         KOENIG, // KING
         OBER, // QUEEN
@@ -23,45 +23,61 @@ public class Card {
         NEUN, // NINE
         ACHT, // EIGHT
         SIEBEN, // SEVEN
-        WELI, // SIX (Special card with color "SCHELL")
-        NONE, // No sign, used in the game
+        WELI, // SIX (Special card only with suit "SCHELL")
+        NONE, // No rank, used in the game
     }
 
     /**
-     * Card color values, aka. "Farbe"
+     * Card suit values, aka. "Farbe"
      */
-    public enum Color {
+    public enum Suit {
         EICHEL, // OAK
         LAUB, // LEAF
         HERZ, // HEART
         SCHELL, // BELL
-        NONE, // No color, used in the game
+        NONE, // No suit, used in the game
     }
 
-    /** sign value of the card */
-    private Sign sign;
-    /** color value of the card */
-    private Color color;
+    /** rank value of the card */
+    private Rank rank;
+    /** suit value of the card */
+    private Suit suit;
 
     /**
-     * Class constructor specifying sign and color of the card
+     * Class constructor specifying suit and rank of the card
      */
-    public Card(Color color, Sign sign) {
-        this.color = color;
-        this.sign = sign;
-    }
-
-    /**
-     * @return color value of the card
-     */
-    public Color getColor() {
-        return this.color;
+    public Card(Suit suit, Rank rank) {
+        this.suit = suit;
+        this.rank = rank;
     }
 
     /**
-     * @return sign value of the card
+     * @return suit value of the card
      */
-    public Sign getSign() {
-        return this.sign;
+    public Suit getSuit() {
+        return this.suit;
+    }
+
+    /**
+     * @return rank value of the card
+     */
+    public Rank getRank() {
+        return this.rank;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (other == null) {
+            return false;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+
+        Card otherCard = (Card) other;
+        return this.suit == otherCard.suit && this.rank == otherCard.rank;
     }
 }

@@ -4,14 +4,14 @@ import st.watten.Card;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-public class TestCard {
+public class CardTest {
 
     @Test
     public void createHerzKoenig() {
-        Card card = new Card(Card.Color.HERZ, Card.Sign.KOENIG);
+        Card card = new Card(Card.Suit.HERZ, Card.Rank.KOENIG);
 
         // assert statements
-        assertEquals(Card.Color.HERZ, card.getColor());
-        assertEquals(Card.Sign.KOENIG, card.getSign());
+        assertEquals(Card.Suit.HERZ, card.getSuit());
+        assertEquals(Card.Rank.KOENIG, card.getRank());
     }
 }
