@@ -49,6 +49,10 @@ public class Card {
     public Card(Suit suit, Rank rank) {
         this.suit = suit;
         this.rank = rank;
+
+        // Assert WELI is only created with SCHELL suit
+        assert ((this.rank == Card.Rank.WELI) && (this.suit == Card.Suit.SCHELL))
+                || (this.rank != Card.Rank.WELI) : "WELI can only be of suit SCHELL";
     }
 
     /**
