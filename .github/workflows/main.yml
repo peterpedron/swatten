@@ -21,15 +21,39 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-    
-    - name: Bazel BUILD
-      uses: ngalaiko/bazel-action@2.0.0
+
+    - name: Mount bazel cache
+      uses: actions/cache@v1
       with:
-        # Arguments to the bazel command
-        args: "build //:all"
-        
-    - name: Bazel TEST
-      uses: ngalaiko/bazel-action@2.0.0
+        path: "/home/runner/.cache/bazel"
+        key: bazel
+
+    - name: Install bazelisk
+      run: |
+        curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.1.0/bazelisk-linux-amd64"
+        mkdir -p "${GITHUB_WORKSPACE}/bin/"
+        mv bazelisk-linux-amd64 "${GITHUB_WORKSPACE}/bin/bazel"
+        chmod +x "${GITHUB_WORKSPACE}/bin/bazel"
+
+    - name: BUILD
+      run: |
+        "${GITHUB_WORKSPACE}/bin/bazel" build //...
+
+    - name: TESTS
+      run: |
+        "${GITHUB_WORKSPACE}/bin/bazel" test //... --test_output=all --nocache_test_results
+
+    - name: Junit Report to Annotations
+      uses: ashley-taylor/junit-report-annotations-action@v1.0
+      if: always()
       with:
-        # Arguments to the bazel command
-        args: "test //:all --test_output=all --nocache_test_results"
+        # github token
+        access-token: ${{ secrets.GITHUB_TOKEN }}
+        # glob to junit xml files
+        path: bazel-testlogs/AllTests/*.xml
+        # include summary annotation
+        includeSummary: true
+        # max number of failed tests to include
+        numFailures: 10
+        # path to test source
+        testSrcPath: src/test/java
