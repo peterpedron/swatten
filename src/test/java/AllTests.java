@@ -6,6 +6,6 @@ import st.watten.test.CardDeckTest;
 import st.watten.test.CardTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({ CardTest.class })
+@SuiteClasses({ CardTest.class, CardDeckTest.class })
 public class AllTests {
 }

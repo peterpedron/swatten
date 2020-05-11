@@ -10,11 +10,13 @@ import java.util.Vector;
  */
 public class CardDeck {
 
-    private Vector<Card> deck = new Vector<Card>();
+    public static final int MAX_CARD_COUNT = 33;
+
+    private Vector<Card> deck = new Vector<Card>(MAX_CARD_COUNT);
 
     public CardDeck() {
         generateDeck();
-        mix();
+        shuffle();
     }
 
     private void generateDeck() {
@@ -30,7 +32,7 @@ public class CardDeck {
         assert deck.size() == 33;
     }
 
-    public void mix() {
+    public void shuffle() {
         Collections.shuffle(deck);
     }
 
@@ -43,6 +45,16 @@ public class CardDeck {
             return deck.remove(0);
         }
         return null;
+    }
+
+    public Vector<Card> drawCards(int count) {
+        Vector<Card> cards = new Vector<Card>();
+        if (deck.size() >= count) {
+            for (int i = 0; i < count; i++) {
+                cards.add(drawCard());
+            }
+        }
+        return cards;
     }
 
 }
